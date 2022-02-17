@@ -4,11 +4,14 @@ const expressLayout = require('express-ejs-layouts');
 const app = express();
 const port = 8000;
 
-//use express route
-app.use('/', require('./route/index'));
-
 //use express layout
 app.use(expressLayout);
+
+//use static files
+app.use(express.static('./assets'));
+
+//use express route
+app.use('/', require('./route/index'));
 
 //set up view engine
 app.set('view engine', 'ejs');
