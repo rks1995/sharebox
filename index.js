@@ -15,5 +15,5 @@ app.listen(port, function (err) {
     console.log('error connecting server');
     return;
   }
-  console.log(`server is up and running at port ${port}`);
+  console.log(`server is up and running at http://localhost:${port}`);
 });
