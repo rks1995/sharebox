@@ -6,6 +6,9 @@ const port = 8000;
 
 //use express layout
 app.use(expressLayout);
+// extract style and script from a sub-page to layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 //use static files
 app.use(express.static('./assets'));
