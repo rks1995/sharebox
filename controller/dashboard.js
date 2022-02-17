@@ -1,3 +1,5 @@
 module.exports.dashboard = function (req, res) {
-  return res.send('<h1> hello from dashboard controller');
+  return res.render('dashboard', {
+    title: 'dashboard',
+  });
 };
