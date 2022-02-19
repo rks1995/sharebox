@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const profileController = require('../controller/profile');
+const {
+  signin,
+  signup,
+  create,
+  createSession,
+} = require('../controller/user_controller');
 
-router.get('/profile', profileController.profile);
-router.get('/post', profileController.post);
+router.get('/signin', signin);
+router.get('/signup', signup);
 
-router.use('/profile', require('./profile'));
+router.post('/create', create);
+router.get('/create-session', createSession);
+
 module.exports = router;
