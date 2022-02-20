@@ -7,7 +7,10 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 
+//set up mongo store to store session cookie
+const MongoStore = require('connect-mongo');
 const db = require('./config/mongoose');
+const { options } = require('./route/users');
 
 const app = express();
 const port = 8000;
@@ -30,6 +33,7 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 //use express-session as middleware to encrypth cookies
+//mongo store setup
 app.use(
   session({
     name: 'user_id',
@@ -40,6 +44,10 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 100,
     },
+    store: MongoStore.create({
+      mongoUrl: 'mongodb://localhost/sharebox_db',
+      autoRemove: 'disabled',
+    }),
   })
 );
 
