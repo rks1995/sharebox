@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/css/form.css">
 
-<form action="/user/create-session" id="form" method="get">
+<form action="/user/create-session" id="form" method="post">
     <h2>Login</h2>
-    <input type="email" placeholder="email">
-    <input type="password" placeholder="password">
+    <input type="email" name="email" placeholder="email">
+    <input type="password" name="password" placeholder="password">
     <button class="btn" type="submit">Sign In</button>
 </form>

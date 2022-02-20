@@ -1,6 +1,12 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressLayout = require('express-ejs-layouts');
+
+//use express-session to authenticate
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
+
 const db = require('./config/mongoose');
 
 const app = express();
@@ -19,12 +25,31 @@ app.set('layout extractScripts', true);
 //use static files
 app.use(express.static('./assets'));
 
-//use express route
-app.use('/', require('./route/index'));
-
 //set up view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+
+//use express-session as middleware to encrypth cookies
+app.use(
+  session({
+    name: 'user_id',
+    // TODO change the secret before deployement in production mode
+    secret: 'demosecret',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      maxAge: 1000 * 60 * 100,
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setUserAuthentication);
+
+//use express route
+app.use('/', require('./route/index'));
 
 //start server
 app.listen(port, function (err) {

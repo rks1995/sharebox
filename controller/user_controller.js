@@ -1,17 +1,32 @@
 const User = require('../models/user');
 
 signin = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/user/profile');
+  }
+
   return res.render('signin', {
     title: 'Signin',
   });
 };
 
 signup = function (req, res) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/user/profile');
+  }
+
   return res.render('signup', {
     title: 'Register',
   });
 };
 
+profile = function (req, res) {
+  if (req.cookies.user_id) {
+    return res.render('profile', {
+      title: 'profile page',
+    });
+  }
+};
 //create user
 create = function (req, res) {
   if (req.body.password !== req.body.confirm_password) {
@@ -39,11 +54,14 @@ create = function (req, res) {
 };
 
 //login user
-createSession = function (req, res) {};
+createSession = function (req, res) {
+  return res.redirect('/');
+};
 
 module.exports = {
   signin,
   signup,
   create,
+  profile,
   createSession,
 };
