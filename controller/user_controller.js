@@ -27,6 +27,12 @@ profile = function (req, res) {
     });
   }
 };
+
+destroySession = function (req, res) {
+  req.logOut();
+  return res.redirect('/');
+};
+
 //create user
 create = function (req, res) {
   if (req.body.password !== req.body.confirm_password) {
@@ -63,5 +69,6 @@ module.exports = {
   signup,
   create,
   profile,
+  destroySession,
   createSession,
 };

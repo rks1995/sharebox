@@ -7,6 +7,7 @@ const {
   signup,
   create,
   profile,
+  destroySession,
   createSession,
 } = require('../controller/user_controller');
 
@@ -14,6 +15,7 @@ router.get('/profile', passport.checkUserAuthenticated, profile);
 
 router.get('/signin', signin);
 router.get('/signup', signup);
+router.get('/sign-out', destroySession);
 
 router.post('/create', create);
 router.post(
