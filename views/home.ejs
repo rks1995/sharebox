@@ -1,3 +1,24 @@
 <link rel="stylesheet" href="/css/home.css">
 
 <h1>This page is render from home.ejs</h1>
+
+<form action="/post/create-post" id="feed-posts" method="post">
+    <h4>Posts</h4>
+    <textarea name="content" cols="30" rows="3" placeholder="comments"></textarea>
+    <input type="submit" value="post">
+
+    <div class="post-list-container">
+        <ul>
+            <% for(post of posts) { %>
+                <li>
+                    <h2>
+                        <%= post.content %>
+                            <small style="color: purple">
+                                <%= post.user.name %>
+                            </small>
+                    </h2>
+                </li>
+                <% } %>
+        </ul>
+    </div>
+</form>

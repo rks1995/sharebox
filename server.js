@@ -10,7 +10,6 @@ const passportLocal = require('./config/passport-local-strategy');
 //set up mongo store to store session cookie
 const MongoStore = require('connect-mongo');
 const db = require('./config/mongoose');
-const { options } = require('./route/users');
 
 const app = express();
 const port = 8000;

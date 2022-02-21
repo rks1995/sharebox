@@ -1,11 +1,13 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router();
 
-const homeController = require('../controller/home_controller');
+const { home } = require('../controller/home_controller');
 
-router.get('/', homeController.home);
+router.get('/', home);
 
 router.use('/user', require('./users'));
+router.use('/post', require('./posts'));
 
 module.exports = router;

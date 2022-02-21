@@ -21,11 +21,9 @@ signup = function (req, res) {
 };
 
 profile = function (req, res) {
-  if (req.cookies.user_id) {
-    return res.render('profile', {
-      title: 'profile page',
-    });
-  }
+  return res.render('profile', {
+    title: 'profile page',
+  });
 };
 
 destroySession = function (req, res) {
