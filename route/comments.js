@@ -4,11 +4,11 @@ const passport = require('passport');
 
 const { create, deleteComment } = require('../controller/comments_controller');
 
-// router.get(
-//   '/deleteComment/:id',
-//   passport.checkUserAuthenticated,
-//   deleteComment
-// );
+router.get(
+  '/deleteComment/:id',
+  passport.checkUserAuthenticated,
+  deleteComment
+);
 
 router.post('/create', passport.checkUserAuthenticated, create);
 

@@ -14,10 +14,13 @@
                 <% for(post of posts) { %>
                     <li>
                         <h1>
-                            <%= post.content %>
-                                <small style="color: purple">
-                                    <%= post.user.name %>
-                                </small>
+                            <% if(locals.user && post.user.id==locals.user.id) { %>
+                                <a href="/post/deletePost/<%= post._id %>">X</a>
+                                <% } %>
+                                    <%= post.content %>
+                                        <small style="color: purple">
+                                            <%= post.user.name %>
+                                        </small>
                         </h1>
                         <% if(locals.user) {%>
                             <form action="/comments/create" method="post">
@@ -31,10 +34,13 @@
                                         <% for(comment of post.comments) { %>
                                             <li>
                                                 <h3>
-                                                    <%= comment.content %>
-                                                        <small style="color: red">
-                                                            <%= comment.user.name %>
-                                                        </small>
+                                                    <% if(locals.user && comment.user.id==locals.user.id) { %>
+                                                        <a href="/comments/deleteComment/<%= comment._id %>">X</a>
+                                                        <% } %>
+                                                            <%= comment.content %>
+                                                                <small style="color: red">
+                                                                    <%= comment.user.name %>
+                                                                </small>
                                                 </h3>
                                             </li>
                                             <% } %>

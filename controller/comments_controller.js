@@ -10,7 +10,6 @@ create = function (req, res) {
     },
     function (err, comment) {
       //handle err
-      console.log(comment);
       if (err) {
         console.log('error in creating comments in db');
         return;
@@ -29,6 +28,32 @@ create = function (req, res) {
   );
 };
 
+deleteComment = function (req, res) {
+  Comment.findById(req.params.id, function (err, comment) {
+    if (err) {
+      console.log('error in deleting the comment!!');
+      return;
+    }
+    //.id converts object id into string automatically
+    if (comment.user == req.user.id) {
+      const postId = comment.post;
+
+      comment.remove();
+
+      Post.findByIdAndUpdate(
+        postId,
+        { $pull: { comments: req.params.id } },
+        function (err, post) {
+          return res.redirect('back');
+        }
+      );
+    } else {
+      return res.redirect('back');
+    }
+  });
+};
+
 module.exports = {
   create,
+  deleteComment,
 };
