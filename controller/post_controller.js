@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const Comment = require('../models/comments');
 
 createPost = function (req, res) {
   Post.create(
@@ -24,6 +25,12 @@ deletePost = function (req, res) {
     }
     //.id converts object id into string automatically
     if (post.user == req.user.id) {
+      const commentsId = post.comments;
+      for (comments of commentsId) {
+        Comment.findById(comments, function (err, comment) {
+          comment.remove();
+        });
+      }
       post.remove();
       return res.redirect('back');
     } else {
