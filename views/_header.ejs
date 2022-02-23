@@ -1,10 +1,11 @@
-<header>
-    this is a header
-    <h3>
+<link rel="stylesheet" href="/css/header.css">
+
+<header id="header">
+    <h2 id="logo">
         <a href="/">
             LOGO
         </a>
-    </h3>
+    </h2>
     <ul>
         <% if (locals.user) {%>
             <li>
@@ -28,5 +29,4 @@
                 </li>
                 <% } %>
     </ul>
-
 </header>

@@ -1,0 +1,19 @@
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: blueviolet;
+  #logo {
+    a {
+      color: black;
+    }
+  }
+  ul {
+    display: flex;
+    gap: 30px;
+    a {
+      color: #fff;
+    }
+  }
+}

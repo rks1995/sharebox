@@ -1,30 +1,31 @@
 <link rel="stylesheet" href="/css/home.css">
 
-<h1>This page is render from home.ejs</h1>
-
-<% if(locals.user) { %>
-    <form action="/post/create-post" id="feed-posts" method="post">
-        <h4>Posts</h4>
-        <textarea name="content" cols="30" rows="3" placeholder="comments"></textarea>
-        <input type="submit" value="post">
-    </form>
-    <% } %>
-        <section class="post-list-container">
-            <h2>Post</h2>
-            <ul>
-                <% for(post of posts) { %>
-                    <%- include('_post') -%>
-                        <% } %>
-            </ul>
-        </section>
-
-        <section id="friends-list">
-            <h3 class="friends">Friends</h3>
-            <% for(u of all_user) { %>
-                <p>
-                    <a href="/user/profile/<%= u.id %>">
-                        <%= u.name %>
-                    </a>
-                </p>
-                <% } %>
-        </section>
+<div id="home-container">
+    <section id="post-container">
+        <% if(locals.user) { %>
+            <form action="/post/create-post" id="feed-posts" method="post">
+                <h4>Posts</h4>
+                <textarea name="content" cols="30" rows="3" placeholder="What for today?"></textarea>
+                <input type="submit" value="post">
+            </form>
+            <% } %>
+                <div class="post-list-container">
+                    <h2>Post</h2>
+                    <ul>
+                        <% for(post of posts) { %>
+                            <%- include('_post') -%>
+                                <% } %>
+                    </ul>
+                </div>
+    </section>
+    <section id="friends-list">
+        <h3 class="friends">Friends</h3>
+        <% for(u of all_user) { %>
+            <p>
+                <a href="/user/profile/<%= u.id %>">
+                    <%= u.name %>
+                </a>
+            </p>
+            <% } %>
+    </section>
+</div>

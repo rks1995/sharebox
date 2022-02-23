@@ -2,9 +2,6 @@
 
 <div class="dahsboard">
     <h1>profile page</h1>
-
-
-
     <% if(user.id==profile_user._id) {%>
 
         <form action="/user/update/<%= profile_user._id %>" method="post">

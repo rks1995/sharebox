@@ -1,0 +1,20 @@
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: blueviolet;
+}
+
+#header #logo a {
+  color: black;
+}
+
+#header ul {
+  display: flex;
+  gap: 30px;
+}
+
+#header ul a {
+  color: #fff;
+}
