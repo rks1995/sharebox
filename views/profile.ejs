@@ -3,10 +3,23 @@
 <div class="dahsboard">
     <h1>profile page</h1>
 
-    <h1>
-        welcome <%= user.name %>
-    </h1>
-    <h1>
-        your email: <%= user.email %>
-    </h1>
+
+
+    <% if(user.id==profile_user._id) {%>
+
+        <form action="/user/update/<%= profile_user._id %>" method="post">
+            <input type="text" name="name" value="<%= profile_user.name %>" placeholder="Your Name" required>
+            <input type="email" name="email" value="<%= profile_user.email %>" placeholder="Your Email" required>
+            <input type="submit" value="Update">
+        </form>
+
+        <%} else { %>
+            <h1>
+                welcome <%= profile_user.name %>
+            </h1>
+            <h1>
+                your email: <%= profile_user.email %>
+            </h1>
+
+            <% } %>
 </div>

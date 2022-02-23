@@ -7,11 +7,13 @@ const {
   signup,
   create,
   profile,
+  update,
   destroySession,
   createSession,
 } = require('../controller/user_controller');
 
-router.get('/profile', passport.checkUserAuthenticated, profile);
+router.get('/profile/:id', passport.checkUserAuthenticated, profile);
+router.post('/update/:id', update);
 
 router.get('/signin', signin);
 router.get('/signup', signup);

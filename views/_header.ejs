@@ -1,10 +1,14 @@
 <header>
     this is a header
-
+    <h3>
+        <a href="/">
+            LOGO
+        </a>
+    </h3>
     <ul>
         <% if (locals.user) {%>
             <li>
-                <a href="/user/profile">
+                <a href="/user/profile/<%= user.id %>">
                     <%= user.name %>
                 </a>
             </li>

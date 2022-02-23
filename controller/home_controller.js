@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 home = function (req, res) {
   //populate the user
@@ -11,9 +12,12 @@ home = function (req, res) {
       },
     })
     .exec(function (err, posts) {
-      return res.render('Home', {
-        title: 'Home',
-        posts: posts,
+      User.find({}, function (err, user) {
+        return res.render('Home', {
+          title: 'Home',
+          posts: posts,
+          all_user: user,
+        });
       });
     });
 };

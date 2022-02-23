@@ -21,9 +21,26 @@ signup = function (req, res) {
 };
 
 profile = function (req, res) {
-  return res.render('profile', {
-    title: 'profile page',
+  User.findById(req.params.id, function (err, user) {
+    return res.render('profile', {
+      title: 'profile page',
+      profile_user: user,
+    });
   });
+};
+
+update = function (req, res) {
+  if (req.user.id == req.params.id) {
+    User.findByIdAndUpdate(
+      req.params.id,
+      { name: req.body.name, email: req.body.email },
+      function (err, user) {
+        return res.redirect('back');
+      }
+    );
+  } else {
+    return res.status(401).send('unauthorized');
+  }
 };
 
 destroySession = function (req, res) {
@@ -67,6 +84,7 @@ module.exports = {
   signup,
   create,
   profile,
+  update,
   destroySession,
   createSession,
 };
