@@ -20,24 +20,27 @@ signup = function (req, res) {
   });
 };
 
-profile = function (req, res) {
-  User.findById(req.params.id, function (err, user) {
+profile = async function (req, res) {
+  try {
+    let user = await User.findById(req.params.id);
+
     return res.render('profile', {
       title: 'profile page',
       profile_user: user,
     });
-  });
+  } catch (error) {
+    console.log('Error', error);
+    return;
+  }
 };
 
-update = function (req, res) {
+update = async function (req, res) {
   if (req.user.id == req.params.id) {
-    User.findByIdAndUpdate(
-      req.params.id,
-      { name: req.body.name, email: req.body.email },
-      function (err, user) {
-        return res.redirect('back');
-      }
-    );
+    await User.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      email: req.body.email,
+    });
+    return res.redirect('back');
   } else {
     return res.status(401).send('unauthorized');
   }

@@ -1,42 +1,33 @@
 const Post = require('../models/post');
 const Comment = require('../models/comments');
 
-createPost = function (req, res) {
-  Post.create(
-    {
+createPost = async function (req, res) {
+  try {
+    await Post.create({
       content: req.body.content,
       user: req.user._id,
-    },
-    function (err) {
-      if (err) {
-        console.log('Error creating posts :(');
-        return;
-      }
-      return res.redirect('back');
-    }
-  );
+    });
+    return res.redirect('back');
+  } catch (error) {
+    console.log('Error', error);
+  }
 };
 
-deletePost = function (req, res) {
-  Post.findById(req.params.id, function (err, post) {
-    if (err) {
-      console.log('error in deleting the comment!!');
-      return;
-    }
+deletePost = async function (req, res) {
+  try {
+    let post = await Post.findById(req.params.id);
     //.id converts object id into string automatically
     if (post.user == req.user.id) {
-      const commentsId = post.comments;
-      for (comments of commentsId) {
-        Comment.findById(comments, function (err, comment) {
-          comment.remove();
-        });
-      }
       post.remove();
-      return res.redirect('back');
-    } else {
+
+      await Comment.deleteMany({ post: req.params.id });
+
       return res.redirect('back');
     }
-  });
+  } catch (error) {
+    console.log('Error', error);
+    return;
+  }
 };
 module.exports = {
   createPost,
