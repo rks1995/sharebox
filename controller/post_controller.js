@@ -7,6 +7,7 @@ createPost = async function (req, res) {
       content: req.body.content,
       user: req.user._id,
     });
+    req.flash('success', 'post created');
     return res.redirect('back');
   } catch (error) {
     console.log('Error', error);
@@ -21,7 +22,7 @@ deletePost = async function (req, res) {
       post.remove();
 
       await Comment.deleteMany({ post: req.params.id });
-
+      req.flash('error', 'post deleted');
       return res.redirect('back');
     }
   } catch (error) {

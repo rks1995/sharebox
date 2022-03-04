@@ -17,7 +17,7 @@ create = async function (req, res) {
       return res.redirect('back');
     }
   } catch (error) {
-    console.log('Error', error);
+    console.log('Error', err);
     return;
   }
 };

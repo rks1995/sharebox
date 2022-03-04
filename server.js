@@ -7,6 +7,11 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 
+//flash
+const flash = require('connect-flash');
+
+const customMware = require('./config/middleware');
+
 //set up mongo store to store session cookie
 const MongoStore = require('connect-mongo');
 const db = require('./config/mongoose');
@@ -67,6 +72,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setUserAuthentication);
+
+app.use(flash());
+app.use(customMware.flashMessage);
 
 //use express route
 app.use('/', require('./route/index'));

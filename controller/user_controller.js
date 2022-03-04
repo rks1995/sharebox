@@ -40,15 +40,11 @@ update = async function (req, res) {
       name: req.body.name,
       email: req.body.email,
     });
+    req.flash('success', 'profile updated!');
     return res.redirect('back');
   } else {
     return res.status(401).send('unauthorized');
   }
-};
-
-destroySession = function (req, res) {
-  req.logOut();
-  return res.redirect('/');
 };
 
 //create user
@@ -65,10 +61,10 @@ create = function (req, res) {
     if (!user) {
       User.create(req.body, function (err) {
         if (err) {
-          console.log('error in creating user while signing up');
-          return;
+          req.flash('error', err);
+          return res.redirect('back');
         }
-
+        req.flash('success', 'Registered successfully!');
         return res.redirect('/user/signin');
       });
     } else {
@@ -79,6 +75,16 @@ create = function (req, res) {
 
 //login user
 createSession = function (req, res) {
+  req.flash('success', 'Logged In Successfully!');
+
+  return res.redirect('/');
+};
+
+//logout user
+destroySession = function (req, res) {
+  req.flash('success', 'Logged Out Successfully!');
+  req.logOut();
+
   return res.redirect('/');
 };
 
