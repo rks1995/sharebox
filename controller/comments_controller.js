@@ -14,10 +14,20 @@ create = async function (req, res) {
     if (post) {
       post.comments.push(comment);
       post.save();
+
+      let populateComment = await comment.populate('user', 'name');
+      if (req.xhr) {
+        return res.status(200).json({
+          data: {
+            comment: populateComment,
+          },
+        });
+      }
+    } else {
       return res.redirect('back');
     }
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
     return;
   }
 };

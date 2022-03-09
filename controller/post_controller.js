@@ -10,15 +10,16 @@ createPost = async function (req, res) {
 
     if (req.xhr) {
       //send data in json format
+      // req.flash('success', 'post created');
+      let populatePost = await post.populate('user', 'name');
       return res.status(200).json({
         data: {
-          post: post,
+          post: populatePost,
         },
         message: 'Post created',
       });
     }
 
-    req.flash('success', 'post created');
     return res.redirect('back');
   } catch (error) {
     console.log('Error', error);
@@ -44,7 +45,7 @@ deletePost = async function (req, res) {
         });
       }
 
-      req.flash('error', 'post deleted');
+      // req.flash('error', 'post deleted');
       return res.redirect('back');
     }
   } catch (error) {

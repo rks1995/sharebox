@@ -1,4 +1,24 @@
 {
+  function notySuccess(msg) {
+    new Noty({
+      theme: 'relax',
+      text: msg,
+      type: 'success',
+      layout: 'topCenter',
+      timeout: '1500',
+    }).show();
+  }
+
+  function notyError(msg) {
+    new Noty({
+      theme: 'relax',
+      text: msg,
+      type: 'error',
+      layout: 'topCenter',
+      timeout: '1500',
+    }).show();
+  }
+
   //method to submit form-data to new post using AJAX
   let createPost = () => {
     let feedPostForm = $('#feed-posts');
@@ -11,12 +31,15 @@
         url: '/post/create-post',
         data: feedPostForm.serialize(),
         success: function (result) {
-          let newPost = newPostDom(result.data.post);
+          let post = result.data.post;
+          let msg = result.message;
+          notySuccess(msg);
+          let newPost = newPostDom(post);
           $('.post-list-container > ul').prepend(newPost);
           deletePost($('.delete-post-button', newPost));
         },
         error: function (err) {
-          console.log(err.responseText);
+          notyError(err.responseText);
         },
       });
     });
@@ -56,6 +79,7 @@
         type: 'get',
         url: $(deleteLink).prop('href'),
         success: function (result) {
+          notySuccess(result.message);
           $(`#post-${result.data.post_id}`).remove();
         },
         error: function (err) {
@@ -64,5 +88,45 @@
       });
     });
   };
+
+  let posts = $('.delete-post-button');
+  for (let deleteBtn of posts) {
+    deletePost(deleteBtn);
+  }
+
+  let createComment = () => {
+    let commentForm = $('#comment-form');
+
+    commentForm.submit(function (e) {
+      e.preventDefault();
+
+      $.ajax({
+        type: 'post',
+        url: '/comments/create',
+        data: commentForm.serialize(),
+        success: function (result) {
+          let newComment = newCommentDom(result.data.comment);
+          $('.comment-list > ul').prepend(newComment);
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    });
+  };
+
+  let newCommentDom = (comment) => {
+    return $(`<li id="comment-${comment._id}>
+    <h3>
+        <a class="delete-comment-button" href="/comments/deleteComment/${comment._id}">X</a>
+         ${comment.content}
+        <small style="color: red">
+             ${comment.user.name}
+        </small>
+    </h3>
+</li>`);
+  };
+
+  createComment();
   createPost();
 }
