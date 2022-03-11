@@ -6,3 +6,8 @@
   padding: 20px;
   width: 400px;
 }
+
+#profile-picture {
+  margin: 1.25rem;
+  border-radius: 50%;
+}

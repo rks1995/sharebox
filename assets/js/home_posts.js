@@ -31,9 +31,8 @@
         url: '/post/create-post',
         data: feedPostForm.serialize(),
         success: function (result) {
+          notySuccess(result.message);
           let post = result.data.post;
-          let msg = result.message;
-          notySuccess(msg);
           let newPost = newPostDom(post);
           $('.post-list-container > ul').prepend(newPost);
           deletePost($('.delete-post-button', newPost));
@@ -60,7 +59,7 @@
     
         <form action="/comments/create" method="post">
             <input type="text" name="content" placeholder="comments...">
-            <input type="hidden" name="post" value=" ${post._id}">
+            <input type="hidden" name="post" value="${post._id}">
             <input type="submit" value="comment">
         </form>
      
@@ -89,6 +88,7 @@
     });
   };
 
+  // adding AJAX deletion to all post if present already
   let posts = $('.delete-post-button');
   for (let deleteBtn of posts) {
     deletePost(deleteBtn);

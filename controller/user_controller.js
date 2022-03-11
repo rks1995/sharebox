@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 signin = function (req, res) {
   if (req.isAuthenticated()) {
@@ -36,12 +38,36 @@ profile = async function (req, res) {
 
 update = async function (req, res) {
   if (req.user.id == req.params.id) {
-    await User.findByIdAndUpdate(req.params.id, {
-      name: req.body.name,
-      email: req.body.email,
-    });
-    req.flash('success', 'profile updated!');
-    return res.redirect('back');
+    try {
+      let user = await User.findById(req.params.id);
+      let pathName = path.join(__dirname, '..', User.avatarPath);
+      let isFilePresent = false;
+      fs.readdir(pathName, function (err, files) {
+        if (files.length > 0) {
+          isFilePresent = true;
+        }
+      });
+      User.uploads(req, res, function (err) {
+        if (err) {
+          console.log('Multer error', err);
+          return;
+        }
+
+        user.name = req.body.name;
+        user.email = req.body.email;
+        if (req.file) {
+          if (isFilePresent) {
+            fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+          }
+          user.avatar = User.avatarPath + '/' + req.file.filename;
+        }
+        user.save();
+        return res.redirect('back');
+      });
+    } catch (error) {
+      console.log('Error', error);
+      return;
+    }
   } else {
     return res.status(401).send('unauthorized');
   }

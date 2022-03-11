@@ -7,6 +7,9 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 
+//set up multer
+const multer = require('multer');
+
 //flash
 const flash = require('connect-flash');
 
@@ -20,7 +23,7 @@ const db = require('./config/mongoose');
 const sassMiddleware = require('node-sass-middleware');
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = 8000;
 
 app.use(
   sassMiddleware({
@@ -78,6 +81,9 @@ app.use(customMware.flashMessage);
 
 //use express route
 app.use('/', require('./route/index'));
+
+//set avatar path
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 //start server
 app.listen(port, function (err) {

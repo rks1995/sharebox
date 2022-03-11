@@ -9,22 +9,19 @@ create = async function (req, res) {
       post: req.body.post,
     });
 
-    let post = await Post.findById(req.body.post);
-
-    if (post) {
-      post.comments.push(comment);
-      post.save();
-
+    if (req.xhr) {
+      let post = await Post.findById(req.body.post);
       let populateComment = await comment.populate('user', 'name');
-      if (req.xhr) {
+      if (post) {
+        post.comments.push(comment);
+        post.save();
+
         return res.status(200).json({
           data: {
             comment: populateComment,
           },
         });
       }
-    } else {
-      return res.redirect('back');
     }
   } catch (error) {
     console.log('Error', error);

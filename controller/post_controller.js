@@ -10,7 +10,6 @@ createPost = async function (req, res) {
 
     if (req.xhr) {
       //send data in json format
-      // req.flash('success', 'post created');
       let populatePost = await post.populate('user', 'name');
       return res.status(200).json({
         data: {
