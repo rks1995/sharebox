@@ -52,6 +52,7 @@ deletePost = async function (req, res) {
     return;
   }
 };
+
 module.exports = {
   createPost,
   deletePost,

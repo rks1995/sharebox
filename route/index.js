@@ -11,4 +11,6 @@ router.use('/user', require('./users'));
 router.use('/post', require('./posts'));
 router.use('/comments', require('./comments'));
 
+router.use('/api', require('./api'));
+
 module.exports = router;
