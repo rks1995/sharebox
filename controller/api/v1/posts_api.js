@@ -22,14 +22,20 @@ deletePost = async function (req, res) {
   try {
     let post = await Post.findById(req.params.id);
 
-    post.remove();
+    if (post.user == req.user.id) {
+      post.remove();
 
-    await Comment.deleteMany({ post: req.params.id });
+      await Comment.deleteMany({ post: req.params.id });
 
-    // req.flash('error', 'post deleted');
-    return res.status(200).json({
-      message: 'Post and associated comments deleted',
-    });
+      // req.flash('error', 'post deleted');
+      return res.status(200).json({
+        message: 'Post and associated comments deleted',
+      });
+    } else {
+      return res.status(401).json({
+        message: 'unauthorized user',
+      });
+    }
   } catch (error) {
     console.log('Error', error);
     return res.status(500).json({
