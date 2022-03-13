@@ -26,4 +26,18 @@ router.post(
   createSession
 );
 
+//google auth
+//1. get information from google
+router.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+//2. google sends back the response to the web browser
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: 'user/signin' }),
+  createSession
+);
+
 module.exports = router;
