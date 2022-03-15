@@ -36,6 +36,7 @@
           let newPost = newPostDom(post);
           $('.post-list-container > ul').prepend(newPost);
           deletePost($('.delete-post-button', newPost));
+          convertPostToAjax();
         },
         error: function (err) {
           notyError(err.responseText);
@@ -57,14 +58,14 @@
 
     </h1>
     
-        <form action="/comments/create" method="post">
+        <form action="/comments/create" id="post-${post._id}-comment-form" method="post">
             <input type="text" name="content" placeholder="comments...">
             <input type="hidden" name="post" value="${post._id}">
             <input type="submit" value="comment">
         </form>
      
             <div class="comment-list">
-                <ul>
+                <ul id="post-comments-${post._id}">
                 </ul>
             </div>
 </li>`);
@@ -88,45 +89,17 @@
     });
   };
 
-  // adding AJAX deletion to all post if present already
-  let posts = $('.delete-post-button');
-  for (let deleteBtn of posts) {
-    deletePost(deleteBtn);
-  }
+  // adding AJAX to all post if present already
+  let convertPostToAjax = function () {
+    $('.post-list-container > ul > li').each(function () {
+      let self = this;
 
-  let createComment = () => {
-    let commentForm = $('#comment-form');
-
-    commentForm.submit(function (e) {
-      e.preventDefault();
-
-      $.ajax({
-        type: 'post',
-        url: '/comments/create',
-        data: commentForm.serialize(),
-        success: function (result) {
-          let newComment = newCommentDom(result.data.comment);
-          $('.comment-list > ul').prepend(newComment);
-        },
-        error: function (err) {
-          console.log(err);
-        },
-      });
+      let postId = $(this).prop('id').split('-')[1];
+      let deleteLink = $('.delete-post-button', self);
+      deletePost(deleteLink);
+      new PostComments(postId);
     });
   };
-
-  let newCommentDom = (comment) => {
-    return $(`<li id="comment-${comment._id}>
-    <h3>
-        <a class="delete-comment-button" href="/comments/deleteComment/${comment._id}">X</a>
-         ${comment.content}
-        <small style="color: red">
-             ${comment.user.name}
-        </small>
-    </h3>
-</li>`);
-  };
-
-  createComment();
   createPost();
+  convertPostToAjax();
 }
