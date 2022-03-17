@@ -8,7 +8,6 @@ class PostComments {
     let self = this;
     //make Ajax request to all existing comments
     $('.delete-comment-button', this.postContainer).each(function () {
-      console.log($(this));
       self.deleteComment($(this));
     });
   }
@@ -46,6 +45,8 @@ class PostComments {
           let newComment = pSelf.newCommentDom(result.data.comment);
           $(`#post-comments-${postId}`).prepend(newComment);
           pSelf.deleteComment($('.delete-comment-button', newComment));
+
+          new ToggleLikes($('.like-button', newComment));
           notySuccess('Comment Published');
         },
         error: function (err) {
@@ -73,13 +74,19 @@ class PostComments {
   newCommentDom = (comment) => {
     return $(`<li id="comment-${comment._id}">
     <h3>
-        
-      <a class="delete-comment-button" href="/comments/deleteComment/${comment._id}">X</a>
-    
+      <small>  
+        <a class="delete-comment-button" href="/comments/deleteComment/${comment._id}">X</a>
+      </small>
       ${comment.content}
       <small style="color: red">
           ${comment.user.name}
       </small>
+      <br>
+      <small>          
+        <a class="like-button" data-likes="0" href="/likes/togglelikes/?id=${comment._id}&type=Comment">
+            0 Likes
+        </a>
+      </small> 
     </h3>
 </li>`);
   };

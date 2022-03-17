@@ -36,39 +36,16 @@
           let newPost = newPostDom(post);
           $('.post-list-container > ul').prepend(newPost);
           deletePost($('.delete-post-button', newPost));
-          convertPostToAjax();
+
+          new PostComments(result.data.post._id);
+
+          new ToggleLikes($('.like-button', newPost));
         },
         error: function (err) {
           notyError(err.responseText);
         },
       });
     });
-  };
-
-  //method to display post in dom;
-  let newPostDom = (post) => {
-    return $(`<li id="post-${post._id}">
-    <h1>
-        <a class="delete-post-button" href="/post/deletePost/${post._id}">X</a>
-        
-        ${post.content}
-        <small style="color: purple">
-              ${post.user.name}
-        </small>
-
-    </h1>
-    
-        <form action="/comments/create" id="post-${post._id}-comment-form" method="post">
-            <input type="text" name="content" placeholder="comments...">
-            <input type="hidden" name="post" value="${post._id}">
-            <input type="submit" value="comment">
-        </form>
-     
-            <div class="comment-list">
-                <ul id="post-comments-${post._id}">
-                </ul>
-            </div>
-</li>`);
   };
 
   let deletePost = (deleteLink) => {
@@ -92,12 +69,11 @@
   // adding AJAX to all post if present already
   let convertPostToAjax = function () {
     $('.post-list-container > ul > li').each(function () {
-      let self = this;
-
       let postId = $(this).prop('id').split('-')[1];
-      let deleteLink = $('.delete-post-button', self);
+      let deleteLink = $('.delete-post-button', $(this));
       deletePost(deleteLink);
       new PostComments(postId);
+      new ToggleLikes($('.like-button', $(this)));
     });
   };
   createPost();

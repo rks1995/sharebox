@@ -9,10 +9,14 @@ home = async function (req, res) {
       .populate('user')
       .populate({
         path: 'comments',
-        populate: {
-          path: 'user',
+        sort: {
+          select: '-createdAt',
         },
-      });
+        populate: {
+          path: 'user likes',
+        },
+      })
+      .populate('likes');
 
     let user = await User.find({});
 

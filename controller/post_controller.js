@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comments');
+const Like = require('../models/likes');
 
 createPost = async function (req, res) {
   try {
@@ -10,10 +11,10 @@ createPost = async function (req, res) {
 
     if (req.xhr) {
       //send data in json format
-      let populatePost = await post.populate('user', 'name');
+      post = await post.populate('user', 'name likes');
       return res.status(200).json({
         data: {
-          post: populatePost,
+          post: post,
         },
         message: 'Post created',
       });
@@ -31,6 +32,9 @@ deletePost = async function (req, res) {
     //.id converts object id into string automatically
     if (post.user == req.user.id) {
       post.remove();
+
+      await Like.deleteMany({ likeable: req.params.id, onModel: 'Post' });
+      await Like.deleteMany({ id: { $in: post.comments } });
 
       await Comment.deleteMany({ post: req.params.id });
 

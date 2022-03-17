@@ -1,5 +1,6 @@
 const Comment = require('../models/comments');
 const Post = require('../models/post');
+const Like = require('../models/likes');
 
 create = async function (req, res) {
   try {
@@ -41,6 +42,8 @@ deleteComment = async function (req, res) {
       await Post.findByIdAndUpdate(postId, {
         $pull: { comments: req.params.id },
       });
+
+      await Like.deleteMany({ likeable: req.params.id, onModel: 'Comment' });
 
       if (req.xhr) {
         return res.status(200).json({
