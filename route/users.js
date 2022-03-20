@@ -12,8 +12,12 @@ const {
   createSession,
 } = require('../controller/user_controller');
 
+const { addFriend, removeFriend } = require('../controller/friends_controller');
+
 router.get('/profile/:id', passport.checkUserAuthenticated, profile);
 router.post('/update/:id', update);
+router.post('/profile/add/:id', addFriend);
+router.get('/profile/remove/:id', removeFriend);
 
 router.get('/signin', signin);
 router.get('/signup', signup);

@@ -20,6 +20,32 @@
     </section>
     <section id="friends-list">
         <h3 class="friends">Friends</h3>
+        <% if(locals.user && locals.user.friendships.length> 0) { %>
+            <% for(f of all_friends) { %>
+                <p>
+                    <% if(f.from_user.id==locals.user.id) { %>
+                        <a href="/user/profile/<%= f.to_user.id %>">
+                            <%= f.to_user.name %>
+                        </a>
+                        <a class="remove-friend-button" href="/user/profile/remove/<%= f.to_user.id %>">
+                            X
+                        </a>
+                        <% } else if(f.to_user.id==locals.user.id) {%>
+                            <a href="/user/profile/<%= f.to_user.id %>">
+                                <%= f.from_user.name %>
+                            </a>
+                            <a class="remove-friend-button" href="/user/profile/remove/<%= f.from_user.id %>">
+                                X
+                            </a>
+                            <% } %>
+
+                </p>
+                <% } %>
+                    <% } %>
+
+    </section>
+    <section id="friends-list">
+        <h3 class="friends">Users</h3>
         <% for(u of all_user) { %>
             <p>
                 <a href="/user/profile/<%= u.id %>">
@@ -29,6 +55,7 @@
             <% } %>
     </section>
 </div>
+<script src="/js/friends.js"></script>
 <script src="/js/postDom.js"></script>
 <script src="/js/likes.js"></script>
 <script src="/js/post_comments.js"></script>

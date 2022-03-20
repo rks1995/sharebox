@@ -23,5 +23,11 @@
                 your email: <%= profile_user.email %>
             </h1>
 
+            <small>
+                <a class="add-friend" href="/user/profile/add/<%= profile_user.id %>">Add Friend</a>
+            </small>
+
             <% } %>
 </div>
+
+<script src="/js/friends.js"></script>
