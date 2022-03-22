@@ -1,0 +1,1 @@
+::ffff:127.0.0.1 - - [22/Mar/2022:12:54:34 +0000] "GET / HTTP/1.1" 304 - "http://localhost:8000/user/signin" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0"

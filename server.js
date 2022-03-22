@@ -1,6 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressLayout = require('express-ejs-layouts');
+const env = require('./config/environment');
+const logger = require('morgan');
 const app = express();
 const port = 8000;
 
@@ -31,19 +33,24 @@ const http = require('http');
 const chatServer = http.createServer(app);
 const chatSocket = require('./config/chat_sockets').chatSockets(chatServer);
 
+const path = require('path');
+
 chatServer.listen(5000, () => {
   console.log('chat server listening on port: 5000');
 });
 
-app.use(
-  sassMiddleware({
-    src: './assets/scss',
-    dest: './assets/css',
-    debug: true,
-    outputStyle: 'expanded',
-    prefix: '/css',
-  })
-);
+if (env.name == 'development') {
+  console.log('inside development');
+  app.use(
+    sassMiddleware({
+      src: path.join(__dirname, env.assets_path, '/scss'),
+      dest: path.join(__dirname, env.assets_path, '/css'),
+      debug: true,
+      outputStyle: 'expanded',
+      prefix: '/css',
+    })
+  );
+}
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -56,7 +63,9 @@ app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
 //use static files
-app.use(express.static('./assets'));
+app.use(express.static(env.assets_path));
+
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 //set up view engine
 app.set('view engine', 'ejs');
@@ -68,7 +77,7 @@ app.use(
   session({
     name: 'user_id',
     // TODO change the secret before deployement in production mode
-    secret: 'demosecret',
+    secret: env.secret_key,
     saveUninitialized: false,
     resave: false,
     cookie: {
