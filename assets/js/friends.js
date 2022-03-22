@@ -42,7 +42,6 @@
   function removeFriend() {
     let removeFriendButton = $('.remove-friend-button');
 
-    console.log(removeFriendButton);
     removeFriendButton.click(function (e) {
       e.preventDefault();
 

@@ -1,6 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const expressLayout = require('express-ejs-layouts');
+const app = express();
+const port = 8000;
 
 //use express-session to authenticate
 const session = require('express-session');
@@ -24,8 +26,14 @@ const db = require('./config/mongoose');
 //import sass
 const sassMiddleware = require('node-sass-middleware');
 
-const app = express();
-const port = 8000;
+//integrating socket.io
+const http = require('http');
+const chatServer = http.createServer(app);
+const chatSocket = require('./config/chat_sockets').chatSockets(chatServer);
+
+chatServer.listen(5000, () => {
+  console.log('chat server listening on port: 5000');
+});
 
 app.use(
   sassMiddleware({
